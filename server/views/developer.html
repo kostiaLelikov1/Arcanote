@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <style type="text/css">
+    table { 
+     text-align: justify;
+    }
+    th {
+      padding: 5px;
+    }
+   </style>
+  <title>Documentation</title>
+</head>
+<body>
+  <div>
+    <h1 style="text-align:center">REST_v1 documentation for Agrosphere</h1>
+    <hr>
+    <table border="1" style="width: 100%; border: 2px solid black">
+      <caption><h3>API</h3></caption>
+      <tr>
+        <th><h3>Entity</h3></th></th>
+        <th><h3>Method</h3></th>
+        <th><h3>Path</h3></th>
+        <th width="30%" ><h3>Body properities</h3></th>
+        <th><h3>Desription</h3></th>
+      </tr>
+      <tr>
+        <th rowspan="6">Users</th>
+        <th rowspan= "2">GET</th>
+        <th>/api/v1/users</th>
+        <th>-</th>
+        <th>Returns an object <code>{ "totalQuantity": number, "users": array }</code>, where totalQuantity is a number of all found objects, "users" is an array of them. Has 2 params: "search" and "page". "Search" searches results for specified value, "page" returns only five values. if there is no such page, it returns an error. Accessible only for admins</th>
+      </tr>
+      <tr>
+        <th>/api/v1/users/id</th>
+        <th>-</th>
+        <th>Returns a user with specified id, id is 24 symbols length, containing latin letters and dights. Returns an error if there is no user with such id. Accessible only for admins</th>  
+      </tr>
+      <tr>
+        <th>POST</th>
+        <th>/api/v1/users</th>
+        <th>
+          <ul>
+            <li>username* - string, 4 <= length <= 23</li>
+            <li>password* - string, 4 <= length <= 23</li>
+            <li>password2* - string, 4 <= length <= 23</li>
+            <li>photoFile* - file, size should be less than 5mb</li>
+            <li>name* - string, name</li>
+            <li>bio* - string, user bio</li>
+            <li>surname - string, surname, if empty, surname will not be assigned</li>
+          </ul>
+        </th>
+        <th>Returns a created user object or an error if some required data is missing.</th>
+      </tr>
+      <tr>
+        <th rowspan= "3">PUT</th>
+        <th>/api/v1/users/id</th>
+        <th>
+          <ul>
+            <li>photoFile - file, if the value is undefined, program leaves an old picture</li>
+            <li>name* - string, name</li>
+            <li>bio* - string, user bio</li>
+            <li>surname - string, surname, if empty, surname will not change</li>
+          </ul>
+        </th>
+        <th>
+          Changes user properities, accessible only if authorised user changes his own properties. Returns an error if a user with such id doesn't exist.
+        </th>
+      </tr>
+      <tr>
+          <th>/api/v1/users/id/role</th>
+          <th>
+            <ul>
+              <li>role* - number, new role of a user</li>
+            </ul>
+          </th>
+          <th>
+            Changes user role, accessible only for admins. Returns an error if a user with such id doesn't exist.
+          </th>
+      </tr>
+      <tr>
+          <th>/api/v1/users/id/enable</th>
+          <th>
+            <ul>
+              <li>isDisabled* - boolean, new isDisabled value of a user</li>
+            </ul>
+          </th>
+          <th>
+            Disables or enables user account, accessible only for admins. Returns an error if a user with such id doesn't exist.
+          </th>
+      </tr>
+      <tr>
+        <th rowspan="5">Articles</th>
+        <th rowspan= "2">GET</th>
+        <th>/api/v1/articles</th>
+        <th>-</th>
+        <th>Returns an object <code>{ "totalQuantity": number, "articles": array }</code>, where totalQuantity is a number of all found objects, "articles" is an array of them. Has 2 params: "search" and "page". "Search" searches results for specified value, "page" returns only five values. if there is no such page, it returns an error.</th>
+      </tr>
+      <tr>
+        <th>/api/v1/articles/id</th>
+        <th>-</th>
+        <th>Returns an article with specified id, id is 24 symbols length, containing latin letters and dights. Returns an error if there is no article with such id.</th>  
+      </tr>
+      <tr>
+          <th>POST</th>
+          <th>/api/v1/acticles</th>
+          <th>
+            <ul>
+              <li>title* - string</li>
+              <li>content* - string</li>
+              <li>photoFile* - file, size should be less than 5mb</li>
+            </ul>
+          </th>
+          <th>Returns a created article object or an error, if some required data is missing, Accessible only for logged users, because the article gets an author field</th>
+        </tr>
+        <tr>
+          <th>PUT</th>
+          <th>/api/v1/acticles/id</th>
+          <th>
+            <ul>
+              <li>title* - string</li>
+              <li>content* - string</li>
+              <li>photoFile - file, if the value is undefined, program leaves an old picture</li>
+            </ul>
+          </th>
+          <th>Changes an article or sends an error, if some required data is missing or no such article, Accessible only for an article author.</th>
+        </tr>
+        <tr>
+          <th>DELETE</th>
+          <th>/api/v1/acticles/id</th>
+          <th>
+            -
+          </th>
+          <th>Deletes and article or sends an error, if no article with such id, Accessible only for an article author.</th>
+        </tr>
+        <tr>
+          <th rowspan="7">Companies</th>
+          <th rowspan= "2">GET</th>
+          <th>/api/v1/companies</th>
+          <th>-</th>
+          <th>Returns an object <code>{ "totalQuantity": number, "companies": array }</code>, where totalQuantity is a number of all found objects, "companies" is an array of them. Has 2 params: "search" and "page". "Search" searches results for specified value, "page" returns only five values. if there is no such page, it returns an error.</th>
+        </tr>
+        <tr>
+          <th>/api/v1/companies/id</th>
+          <th>-</th>
+          <th>Returns a company with specified id, id is 24 symbols length, containing latin letters and dights. Returns an error if there is no company with such id.</th>  
+        </tr>
+        <tr>
+          <th>POST</th>
+          <th>/api/v1/companies</th>
+          <th>
+            <ul>
+              <li>name* - string</li>
+              <li>shortDescription* - string</li>
+              <li>fullDescription* - string</li>
+              <li>photoFile* - file, size should be less than 5mb</li>
+            </ul>
+          </th>
+          <th>Returns a created company object or an error, if some required data is missing, Accessible only for logged users, because the company gets an admin field</th>
+        </tr>
+        <tr>
+          <th rowspan= "2">PUT</th>
+          <th>/api/v1/companies/id</th>
+          <th>
+            <ul>
+                <li>name* - string</li>
+                <li>shortDescription* - string</li>
+                <li>fullDescription* - string</li>
+                <li>photoFile - file, if the value is undefined, program leaves an old picture</li>
+            </ul>
+          </th>
+          <th>
+            Changes a company or sends an error, if some required data is missing or no such company, Accessible only for a company admin.
+          </th>
+        </tr>
+        <tr>
+          <th>/api/v1/companies/id/user</th>
+          <th>
+            <ul>
+                <li>login* - string, login of a user</li>
+            </ul>
+          </th>
+          <th>
+            Adds a company to a user with login, or returns an error if no such user. Accessible only for a company admin.
+          </th>
+        </tr>
+        <tr>
+          <th rowspan= "2">DELETE</th>
+          <th>/api/v1/companies/id</th>
+          <th>
+            -
+          </th>
+          <th>
+            Deletes a company or returns an error if no such company. Accessible only for a company admin.
+          </th>
+        </tr>
+        <tr>
+            <th>/api/v1/companies/id/user</th>
+            <th>
+                <ul>
+                    <li>login* - string, login of a user</li>
+                </ul>
+              </th>
+            <th>
+                Removes a company from a user with login, or returns an error if no such user. Accessible only for a company admin.
+            </th>
+          </tr>
+    </table>
+    <p>* - required fields</p>
+    <p>Errors return with codes (400, 401, 403, 404, 500) error body is of such format {error: string}, where string is a message describing the error.</p>
+    <p>API uses basic authorisation.</p>
+  </div>
+</body>
+</html>
